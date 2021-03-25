@@ -1,0 +1,6 @@
+CREATE TABLE Articles (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(50),
+    Content VARCHAR(1000),
+    CreationDate DATETIME
+)

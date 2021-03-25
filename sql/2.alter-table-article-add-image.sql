@@ -1,0 +1,2 @@
+ALTER TABLE Articles
+ADD Image VARCHAR(200)

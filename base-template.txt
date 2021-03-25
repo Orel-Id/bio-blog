@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="fr">
+<?php $title="BioBloc - List of articles"; require "../head.php"; ?>
+<body>
+    <?php require "../header.php" ?>
+    <div class="container">
+    </div>
+    <?php require "../footer.php" ?>
+</body>
+</html>
