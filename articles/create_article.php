@@ -2,10 +2,16 @@
 <?php
 require_once '../config/database.php';
 
+#region post-logic
 function test_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data);
+    return $data;
+}
+
+function test_quill_input($data) {
+    $data = trim($data);
     return $data;
 }
 
@@ -25,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $article = [
         'title' => test_input($_POST['title']),
-        'content' => $_POST['content'] // test_input()
+        'content' => test_quill_input($_POST['content'])
     ];
 
     if (sizeof($validations) === 0) {
@@ -56,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
 }
+#endregion post-logic
 ?>
 
 <!DOCTYPE html>
@@ -85,10 +92,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-group">
                 <label>Content
                     <!-- <textarea class="form-control" name="content" maxlength="1000" required><?= isset($article) ? $article['content'] : '' ?></textarea> -->
-                    <input type="hidden" name="content"/>
                 </label>
-                <div id="editor">
-                </div>
+                <input type="hidden" name="content" />
+                <div id="editor"></div>
                 <?php if(isset($validations) && isset($validations['content'])): ?>
                     <p><?= $validations['content'] ?></p>
                 <?php endif; ?>
@@ -109,29 +115,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <?php require "../footer.php" ?>
     <script>
-        const quill = new Quill('#editor', {
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Write your epic article',
             modules: {
                 toolbar: [
                     [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
                     ['bold', 'italic', 'underline', 'strike'],
                     ['link'],
-                    [{ 'script': 'sub'}, { 'script': 'super' }],
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
                     ['image', 'video'],
                     ['clean']
                 ]
-            },
-            placeholder: 'Write an epic article',
-            theme: 'snow'
+            }
         });
-
-        const form = document.querySelector('form');
+        var form = document.querySelector('form');
         form.onsubmit = function() {
-            const content = document.querySelector('input[name=content]');
-            content.value = JSON.stringify(quill.getContents());
-            return true;
+            var contentInput = document.querySelector('input[name=content]');
+            var content = quill.getContents();
+            console.log('submit', content);
+            if (content.ops.length === 1 && Object.keys(content.ops[0]).length === 1 && content.ops[0].insert.trim().length === 0) {
+                document.querySelector('#editor').className="ql-container ql-snow -error";
+                return false;
+            } else {
+                document.querySelector('#editor').className="ql-container ql-snow";
+                contentInput.value = JSON.stringify(content);
+                return true;
+            }
         };
-        quill.setContents(<?= isset($article) ? html_entity_decode($article['content']) : '' ?>);
+        quill.setContents(<?= isset($article) ? $article['content'] : '' ?>);
     </script>
 </body>
 </html>

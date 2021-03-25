@@ -1,4 +1,6 @@
 <?php
+
+#region get-data
 require_once '../config/database.php';
 $table_name = "articles";
 
@@ -30,7 +32,7 @@ if ($count > 0) {
         array_push($articles,  $article_obj);
     }
 }
-
+#endregion get-data
 ?>
 
 <?php include "./article.php"; ?>
@@ -40,7 +42,10 @@ if ($count > 0) {
 <?php $title="BioBloc - List of articles"; require "../head.php"; ?>
 <body>
     <?php require "../header.php" ?>
-    <style>img { width: 100%; }</style>
+    <style>
+        img { width: 100%; }
+        .ql-video { max-width: 100%; }
+    </style>
     <div class="container">
         <div class="row">
             <?php foreach($articles as $article): ?>
