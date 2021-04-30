@@ -31,7 +31,7 @@ if (isset($_POST["create"])) {
 
 if (isset($_POST["save"])) {
     foreach($_SESSION['categories'] as $key => $category) {
-        if ($category["id" ]) {
+        if ($_POST["id"] === strval($category["id"])) {
             $_SESSION['categories'][$key]["name"] =  $_POST["name"];
             break;
         }
