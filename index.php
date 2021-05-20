@@ -1,3 +1,7 @@
+ <?php
+    session_start();
+    $connected = isset($_SESSION['login']);
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,10 +10,6 @@
     <title>TestAuth</title>
 </head>
 <body>
-    <?php
-        session_start();
-        $connected = isset($_SESSION['login']);
-    ?>
     <?php if($connected): ?>
         <p>Hello <?= $_SESSION['login'] ?></p>
         <a href="logout.php">Logout</a>
