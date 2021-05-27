@@ -2,17 +2,17 @@
 
 require_once '../../config/database.php';
 
-function getArticles($connection) {
+function getArticles() {
+    global $db_default_connection;
     $query = "SELECT id, title, content, image
               FROM articles";
-    $stmt = $connection->prepare($query);
+    $stmt = $db_default_connection->prepare($query);
     $stmt->execute();
     return $stmt;
 }
 
 function getMappedArticles() {
-    global $db_default_connection;
-    $stmt = getArticles($db_default_connection);
+    $stmt = getArticles();
     $count = $stmt->rowCount();
     
     $articles = [];
